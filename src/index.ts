@@ -4,6 +4,7 @@ import { HumanMessage } from "@langchain/core/messages";
 import sharp from "sharp";
 import { PDFLoader } from "@langchain/community/document_loaders/fs/pdf";
 import dotenv from "dotenv";
+import { scanFile } from "./receipt-scanner";
 dotenv.config();
 
 // AIzaSyANwd2jsH63R2ZnOD3lr8IGzN20j-YMF3U
@@ -182,6 +183,13 @@ const detectType = async (fileName: string) => {
 const run = async () => {
   //await readReceipt("receipt/kakuyasu.pdf");
   //await readCompany("receipt/IMG_3027.jpg");
+  const r = await scanFile(
+    "E:\\program\\typescript\\drive_to_gcs\\download\\F081446QK37_請求書_弁当.pdf"
+  );
+  console.log(r);
+};
+
+const run2 = async () => {
   for (const file of [
     //"E:\\program\\typescript\\drive_to_gcs\\download\\F0814FTJGUC_領収書_20241115_スピーカーディナー.jpg",
     //"E:\\program\\typescript\\drive_to_gcs\\download\\F081215GNG3_領収書_懇親会ドリンク_1.jpg",
