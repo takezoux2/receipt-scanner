@@ -8,6 +8,7 @@ import {
   ServiceInvoiceInfo,
   OutsourcingInvoiceInfo,
   UnknownInfo,
+  UnknownObject,
 } from "./accounting-objects";
 import {
   detectDocumentType,
@@ -22,6 +23,12 @@ export const scanFile = async (
   ReceiptInfo | ServiceInvoiceInfo | OutsourcingInvoiceInfo | UnknownInfo
 > => {
   const fileObj = await loadFile(filename);
+  if (fileObj.type === FileType.Unknown) {
+    return {
+      type: "Unknown",
+      filename,
+    };
+  }
   const docType = await detectDocumentType(fileObj);
   console.log(`FileType: ${fileObj.type}, DocType: ${docType}`);
   switch (docType) {
@@ -39,7 +46,9 @@ export const scanFile = async (
   }
 };
 
-const loadFile = async (filename: string): Promise<FileObject> => {
+const loadFile = async (
+  filename: string
+): Promise<FileObject | UnknownObject> => {
   const fileType = detectFileType(filename);
   switch (fileType) {
     case FileType.Image:
@@ -57,6 +66,11 @@ const loadFile = async (filename: string): Promise<FileObject> => {
         filename,
         textContent,
       };
+    case FileType.Unknown:
+      return {
+        type: FileType.Unknown,
+        filename,
+      };
   }
 };
 
@@ -67,7 +81,8 @@ const detectFileType = (filename: string): FileType => {
   if (filename.endsWith(".pdf")) {
     return FileType.PDF;
   }
-  throw new Error(
-    "Unsupported file type.File extension must be .png, .jpg, or .pdf"
+  console.log(
+    `Unsupported file type.File extension must be .png, .jpg, or .pdf. ${filename}`
   );
+  return FileType.Unknown;
 };

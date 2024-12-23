@@ -52,9 +52,6 @@ export const receiptScanner = async (
 const SELF_COMPANY_NAME = "TSKaigi Association";
 
 const PROMPTS = {
-  company: `会社名、店名、または、個人名を抜き出して。出力は名前だけを出して。
-"${SELF_COMPANY_NAME}"が含まれる会社名は、自社なので無視をして。
-  `,
   totalPrice: `合計金額を抜き出して。出力は金額の数値だけを出して。`,
   publishedDate: `発行された日付を抜き出して。`,
   paymentDueDate: `支払期限を抜き出して。`,
@@ -67,7 +64,11 @@ const PROMPTS = {
 };
 
 const SERVICE_INVOICE_PROMPTS = {
-  company: PROMPTS.company,
+  company: `会社名、店名を抜き出して。出力は名前だけを出して。
+"${SELF_COMPANY_NAME}"が含まれる会社名は、自社なので無視をして。
+会社名 > 店名の順の優先度で抜き出して。
+店名の場合は、地名まで含めて出して。
+  `,
   totalPrice: PROMPTS.totalPrice,
   publishedDate: PROMPTS.publishedDate,
   paymentDueDate: PROMPTS.paymentDueDate,
@@ -76,7 +77,10 @@ const SERVICE_INVOICE_PROMPTS = {
   tax8: PROMPTS.tax8,
 };
 const OUTSOURCING_INVOICE_PROMPTS = {
-  company: PROMPTS.company,
+  company: `会社名、または、個人名を抜き出して。出力は名前だけを出して。
+"${SELF_COMPANY_NAME}"が含まれる会社名は、自社なので無視をして。
+会社名 > 個人名の順の優先度で抜き出して。
+  `,
   totalPrice: PROMPTS.totalPrice,
   publishedDate: PROMPTS.publishedDate,
   paymentDueDate: PROMPTS.paymentDueDate,
@@ -85,7 +89,11 @@ const OUTSOURCING_INVOICE_PROMPTS = {
   withholdingTax: `源泉所得税の金額を数値だけ抜き出して。該当する項目が無い場合は、"なし"と出力して`,
 };
 const RECEIPT_PROMPTS = {
-  company: PROMPTS.company,
+  company: `会社名、または、店名を抜き出して。出力は名前だけを出して。
+"${SELF_COMPANY_NAME}"が含まれる会社名は、自社なので無視をして。
+会社名 > 店名の順の優先度で抜き出して。
+店名の場合は、地名まで含めて出して。
+  `,
   totalPrice: PROMPTS.totalPrice,
   publishedDate: PROMPTS.publishedDate,
   invoiceNumber: PROMPTS.invoiceNumber,

@@ -1,6 +1,7 @@
 export enum FileType {
   Image,
   PDF,
+  Unknown,
 }
 
 export type FileObject = ImageObject | PDFObject;
@@ -14,6 +15,10 @@ export type PDFObject = {
   type: FileType.PDF;
   filename: string;
   textContent: string;
+};
+export type UnknownObject = {
+  type: FileType.Unknown;
+  filename: string;
 };
 
 export enum DocType {
